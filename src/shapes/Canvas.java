@@ -1,6 +1,7 @@
 package shapes;
 
-import utils.Color;
+
+import java.awt.Color;
 
 public final class Canvas implements Shape {
     private int sizeX, sizeY;

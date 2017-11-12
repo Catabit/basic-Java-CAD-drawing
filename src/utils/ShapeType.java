@@ -2,7 +2,7 @@ package utils;
 
 public enum ShapeType { //todo add all the possible shapes here
     CANVAS("CANVAS"),
-    RECTANGLE("RECTANGLE"),
+    SQUARE("SQUARE"),
     TRIANGLE("TRIANGLE"),
     CIRCLE("CIRCLE");
 
