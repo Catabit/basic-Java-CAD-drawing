@@ -98,12 +98,22 @@ public final class ShapeDrawer implements Visitor {
 
     @Override
     public void visit(final Polygon s) {
+        int x = 0, y = 0;
         for (int i = 0; i < s.getNumPoints() - 1; i++) {
             Point p1 = s.getPoints().get(i);
             Point p2 = s.getPoints().get(i + 1);
+            x += p1.x();
+            y += p1.y();
             LineDrawer.drawLine(base, p1, p2, s.getBorderColor());
         }
-        //todo fill
+        LineDrawer.drawLine(base, s.getPoints().get(s.getNumPoints() - 1), s.getPoints().get(0),
+                s.getBorderColor());
+        x += s.getPoints().get(s.getNumPoints() - 1).x();
+        y += s.getPoints().get(s.getNumPoints() - 1).y();
+        x /= s.getNumPoints();
+        y /= s.getNumPoints();
+
+        ShapeFiller.floodFill(base, x, y, s.getBorderColor().getRGB(), s.getInnerColor());
     }
 
     @Override
