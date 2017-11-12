@@ -7,7 +7,8 @@ public enum ShapeType { //todo add all the possible shapes here
     RECTANGLE("RECTANGLE"),
     DIAMOND("DIAMOND"),
     TRIANGLE("TRIANGLE"),
-    CIRCLE("CIRCLE");
+    CIRCLE("CIRCLE"),
+    POLYGON("POLYGON");
 
     private final String name;
 

@@ -34,7 +34,8 @@ public final class LineDrawer {
         // initialize the error term to compensate for a nonzero intercept
         int error = 2 * deltaY - deltaX;
         for (int i = 0; i <= deltaX; i++) {
-            base.setRGB(x, y, color.getRGB());
+            Pixel.set(base, x, y, color.getRGB());
+            //base.setRGB(x, y, color.getRGB());
             while (error > 0) {
                 if (interchanged) {
                     x = x + s1;

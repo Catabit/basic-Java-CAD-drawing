@@ -1,8 +1,10 @@
 package shapes;
 
 import utils.LineDrawer;
+import utils.Pixel;
 import utils.Point;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 public final class ShapeDrawer implements Visitor {
@@ -66,20 +68,83 @@ public final class ShapeDrawer implements Visitor {
         l = s.getCenter().getOffset(-s.getLength() / 2, 0);
         r = s.getCenter().getOffset(s.getLength() / 2, 0);
 
-        LineDrawer.drawLine(base, t.getOffset(0, 1), b.getOffset(0, -1), s.getInnerColor());
-        LineDrawer.drawLine(base, r.getOffset(1, 0), l.getOffset(-1, 0), s.getInnerColor());
+        //LineDrawer.drawLine(base, t.getOffset(0, 1), b.getOffset(0, -1), s.getInnerColor());
+        //LineDrawer.drawLine(base, r.getOffset(1, 0), l.getOffset(-1, 0), s.getInnerColor());
 
         LineDrawer.drawLine(base, l, t, s.getBorderColor());
         LineDrawer.drawLine(base, t, r, s.getBorderColor());
         LineDrawer.drawLine(base, r, b, s.getBorderColor());
         LineDrawer.drawLine(base, b, l, s.getBorderColor());
 
-
+        ShapeFiller.floodFill(base, s.getCenter().x(), s.getCenter().y(),
+                s.getBorderColor().getRGB(), s.getInnerColor());
     }
 
     @Override
     public void visit(final Line s) {
         LineDrawer.drawLine(base, s.getStart(), s.getEnd(), s.getBorderColor());
+    }
+
+    @Override
+    public void visit(final Triangle s) {
+        LineDrawer.drawLine(base, s.getP1(), s.getP2(), s.getBorderColor());
+        LineDrawer.drawLine(base, s.getP2(), s.getP3(), s.getBorderColor());
+        LineDrawer.drawLine(base, s.getP3(), s.getP1(), s.getBorderColor());
+        int x = (s.getP1().x() + s.getP2().x() + s.getP3().x()) / 3;
+        int y = (s.getP1().y() + s.getP2().y() + s.getP3().y()) / 3;
+        ShapeFiller.floodFill(base, x, y, s.getBorderColor().getRGB(), s.getInnerColor());
+
+    }
+
+    @Override
+    public void visit(final Polygon s) {
+        for (int i = 0; i < s.getNumPoints() - 1; i++) {
+            Point p1 = s.getPoints().get(i);
+            Point p2 = s.getPoints().get(i + 1);
+            LineDrawer.drawLine(base, p1, p2, s.getBorderColor());
+        }
+        //todo fill
+    }
+
+    @Override
+    public void visit(final Circle s) { //todo magic fkin numbers
+        int xc = s.getCenter().x();
+        int yc = s.getCenter().y();
+        int r = s.getRadius();
+        int x = 0, y = r;
+        int d = 3 - 2 * r;
+        while (y >= x) {
+            // for each pixel we will
+            // draw all eight pixels
+            drawCircle(xc, yc, x, y, s.getBorderColor());
+            x++;
+
+            // check for decision parameter
+            // and correspondingly
+            // update d, x, y
+            if (d > 0) {
+                y--;
+                d = d + 4 * (x - y) + 10;
+            } else {
+                d = d + 4 * x + 6;
+            }
+            drawCircle(xc, yc, x, y, s.getBorderColor());
+        }
+
+        ShapeFiller.floodFill(base, s.getCenter().x(), s.getCenter().y(),
+                s.getBorderColor().getRGB(), s.getInnerColor());
+
+    }
+
+    private void drawCircle(final int xc, final int yc, final int x, final int y, final Color c) {
+        Pixel.set(base, xc + x, yc + y, c.getRGB());
+        Pixel.set(base, xc - x, yc + y, c.getRGB());
+        Pixel.set(base, xc + x, yc - y, c.getRGB());
+        Pixel.set(base, xc - x, yc - y, c.getRGB());
+        Pixel.set(base, xc + y, yc + x, c.getRGB());
+        Pixel.set(base, xc - y, yc + x, c.getRGB());
+        Pixel.set(base, xc + y, yc - x, c.getRGB());
+        Pixel.set(base, xc - y, yc - x, c.getRGB());
     }
 
     public BufferedImage getImage() {
