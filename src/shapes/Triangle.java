@@ -42,7 +42,7 @@ public final class Triangle implements Shape {
     }
 
     @Override
-    public final void accept(final Visitor v) {
+    public void accept(final Visitor v) {
         v.visit(this);
     }
 }

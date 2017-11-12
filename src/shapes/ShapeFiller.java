@@ -3,15 +3,11 @@ package shapes;
 import utils.Pixel;
 import utils.Point;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
+
+import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.util.ArrayDeque;
 import java.util.LinkedList;
-import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.concurrent.LinkedTransferQueue;
 
 public final class ShapeFiller {
     private ShapeFiller() {

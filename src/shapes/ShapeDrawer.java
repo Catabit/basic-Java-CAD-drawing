@@ -4,14 +4,13 @@ import utils.LineDrawer;
 import utils.Pixel;
 import utils.Point;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 public final class ShapeDrawer implements Visitor {
 
     private BufferedImage base;
 
-    //todo this will add the effective shapes to the final image
     @Override
     public void visit(final Square s) {
         //System.out.println("Rectangle something");
@@ -27,8 +26,6 @@ public final class ShapeDrawer implements Visitor {
         LineDrawer.drawLine(base, lb, lt, s.getBorderColor());
 
         ShapeFiller.fill(base, s);
-        //LineDrawer.drawLine(base, lt.getOffset(1, 1), rb.getOffset(-1, -1), s.getInnerColor());
-        //LineDrawer.drawLine(base, rt.getOffset(-1, 1), lb.getOffset(1, -1), s.getInnerColor());
     }
 
     @Override
@@ -45,13 +42,11 @@ public final class ShapeDrawer implements Visitor {
         LineDrawer.drawLine(base, lb, lt, r.getBorderColor());
 
         ShapeFiller.fill(base, r);
-        //LineDrawer.drawLine(base, lt.getOffset(1, 1), rb.getOffset(-1, -1), r.getInnerColor());
-        //LineDrawer.drawLine(base, rt.getOffset(-1, 1), lb.getOffset(1, -1), r.getInnerColor());
     }
 
     @Override
     public void visit(final Canvas s) {
-        //System.out.println(s.getSizeX() + " " + s.getSizeY() + " " + s.getBackground().toString());
+
         base = new BufferedImage(s.getSizeX(), s.getSizeY(), BufferedImage.TYPE_INT_ARGB);
         for (int i = 0; i < s.getSizeX(); i++) {
             for (int j = 0; j < s.getSizeY(); j++) {
@@ -67,9 +62,6 @@ public final class ShapeDrawer implements Visitor {
         b = s.getCenter().getOffset(0, -s.getHeight() / 2);
         l = s.getCenter().getOffset(-s.getLength() / 2, 0);
         r = s.getCenter().getOffset(s.getLength() / 2, 0);
-
-        //LineDrawer.drawLine(base, t.getOffset(0, 1), b.getOffset(0, -1), s.getInnerColor());
-        //LineDrawer.drawLine(base, r.getOffset(1, 0), l.getOffset(-1, 0), s.getInnerColor());
 
         LineDrawer.drawLine(base, l, t, s.getBorderColor());
         LineDrawer.drawLine(base, t, r, s.getBorderColor());
@@ -87,11 +79,12 @@ public final class ShapeDrawer implements Visitor {
 
     @Override
     public void visit(final Triangle s) {
+        final int divider = 3;
         LineDrawer.drawLine(base, s.getP1(), s.getP2(), s.getBorderColor());
         LineDrawer.drawLine(base, s.getP2(), s.getP3(), s.getBorderColor());
         LineDrawer.drawLine(base, s.getP3(), s.getP1(), s.getBorderColor());
-        int x = (s.getP1().x() + s.getP2().x() + s.getP3().x()) / 3;
-        int y = (s.getP1().y() + s.getP2().y() + s.getP3().y()) / 3;
+        int x = (s.getP1().x() + s.getP2().x() + s.getP3().x()) / divider;
+        int y = (s.getP1().y() + s.getP2().y() + s.getP3().y()) / divider;
         ShapeFiller.floodFill(base, x, y, s.getBorderColor().getRGB(), s.getInnerColor());
 
     }

@@ -4,7 +4,7 @@ import utils.Point;
 
 import java.awt.Color;
 
-public class Line implements Shape {
+public final class Line implements Shape {
 
     private Point start;
     private Point end;
@@ -16,20 +16,20 @@ public class Line implements Shape {
         borderColor = inBorder;
     }
 
-    public final Color getBorderColor() {
+    public Color getBorderColor() {
         return borderColor;
     }
 
-    public final Point getEnd() {
+    public Point getEnd() {
         return end;
     }
 
-    public final Point getStart() {
+    public Point getStart() {
         return start;
     }
 
     @Override
-    public final void accept(final Visitor v) {
+    public void accept(final Visitor v) {
         v.visit(this);
     }
 }

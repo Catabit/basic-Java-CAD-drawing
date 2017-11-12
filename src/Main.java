@@ -1,4 +1,6 @@
-import shapes.*;
+import shapes.ShapeBuilder;
+import shapes.ShapeDrawer;
+import shapes.Shape;
 
 import javax.imageio.ImageIO;
 

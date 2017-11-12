@@ -2,37 +2,37 @@ package shapes;
 
 import utils.Point;
 
-import java.awt.*;
+import java.awt.Color;
 
-public class Diamond implements Shape{
+public final class Diamond implements Shape {
     private Point center;
     private int length;
     private int height;
     private Color borderColor;
     private Color innerColor;
 
-    public final Color getBorderColor() {
+    public Color getBorderColor() {
         return borderColor;
     }
 
-    public final Color getInnerColor() {
+    public Color getInnerColor() {
         return innerColor;
     }
 
-    public final int getLength() {
+    public int getLength() {
         return length;
     }
 
-    public final int getHeight() {
+    public int getHeight() {
         return height;
     }
 
-    public final Point getCenter() {
+    public Point getCenter() {
         return center;
     }
 
     public Diamond(final Point inCenter, final int inLength, final int inHeight,
-                     final Color inBorder, final Color inInner) {
+                   final Color inBorder, final Color inInner) {
         center = inCenter;
         length = inLength;
         height = inHeight;
@@ -41,7 +41,7 @@ public class Diamond implements Shape{
     }
 
     @Override
-    public final void accept(final Visitor v) {
+    public void accept(final Visitor v) {
         v.visit(this);
     }
 }
