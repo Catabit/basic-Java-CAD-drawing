@@ -5,13 +5,13 @@ import utils.Point;
 
 import java.awt.image.BufferedImage;
 
-public class ShapeDrawer implements Visitor {
+public final class ShapeDrawer implements Visitor {
 
     private BufferedImage base;
 
     //todo this will add the effective shapes to the final image
     @Override
-    public final void visit(final Square s) {
+    public void visit(final Square s) {
         //System.out.println("Rectangle something");
         Point lt, rt, lb, rb;
         lt = s.getStart();
@@ -24,12 +24,13 @@ public class ShapeDrawer implements Visitor {
         LineDrawer.drawLine(base, lb, rb, s.getBorderColor());
         LineDrawer.drawLine(base, lb, lt, s.getBorderColor());
 
-        LineDrawer.drawLine(base, lt.getOffset(1, 1), rb.getOffset(-1, -1), s.getInnerColor());
-        LineDrawer.drawLine(base, rt.getOffset(-1, 1), lb.getOffset(1, -1), s.getInnerColor());
+        ShapeFiller.fill(base, s);
+        //LineDrawer.drawLine(base, lt.getOffset(1, 1), rb.getOffset(-1, -1), s.getInnerColor());
+        //LineDrawer.drawLine(base, rt.getOffset(-1, 1), lb.getOffset(1, -1), s.getInnerColor());
     }
 
     @Override
-    public final void visit(final Rectangle r) {
+    public void visit(final Rectangle r) {
         Point lt, rt, lb, rb;
         lt = r.getStart();
         rt = new Point(r.getStart().x() + r.getLength(), r.getStart().y());
@@ -41,12 +42,13 @@ public class ShapeDrawer implements Visitor {
         LineDrawer.drawLine(base, lb, rb, r.getBorderColor());
         LineDrawer.drawLine(base, lb, lt, r.getBorderColor());
 
-        LineDrawer.drawLine(base, lt.getOffset(1, 1), rb.getOffset(-1, -1), r.getInnerColor());
-        LineDrawer.drawLine(base, rt.getOffset(-1, 1), lb.getOffset(1, -1), r.getInnerColor());
+        ShapeFiller.fill(base, r);
+        //LineDrawer.drawLine(base, lt.getOffset(1, 1), rb.getOffset(-1, -1), r.getInnerColor());
+        //LineDrawer.drawLine(base, rt.getOffset(-1, 1), lb.getOffset(1, -1), r.getInnerColor());
     }
 
     @Override
-    public final void visit(final Canvas s) {
+    public void visit(final Canvas s) {
         //System.out.println(s.getSizeX() + " " + s.getSizeY() + " " + s.getBackground().toString());
         base = new BufferedImage(s.getSizeX(), s.getSizeY(), BufferedImage.TYPE_INT_ARGB);
         for (int i = 0; i < s.getSizeX(); i++) {
@@ -75,7 +77,12 @@ public class ShapeDrawer implements Visitor {
 
     }
 
-    public final BufferedImage getImage() {
+    @Override
+    public void visit(final Line s) {
+        LineDrawer.drawLine(base, s.getStart(), s.getEnd(), s.getBorderColor());
+    }
+
+    public BufferedImage getImage() {
         return base;
     }
 }

@@ -5,4 +5,5 @@ public interface Visitor {
     void visit(Rectangle s);
     void visit(Canvas s);
     void visit(Diamond s);
+    void visit(Line s);
 }
