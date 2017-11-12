@@ -16,18 +16,33 @@ public final class ShapeBuilder {
 
     public Shape buildShape(final String input) { //todo add all the shape construction here
         String[] args = input.split(" ");
-        String shapeName = args[0];
+        int argCount = 0;
+        String shapeName = args[argCount++];
         if (shapeName.equals(ShapeType.CANVAS.text())) {
             int sizex, sizey;
-            sizex = Integer.parseInt(args[1]);
-            sizey = Integer.parseInt(args[2]);
-            return new Canvas(sizex, sizey, ColorAdapter.parseColor(args[3], Integer.parseInt(args[4])));
+            sizey = Integer.parseInt(args[argCount++]);
+            sizex = Integer.parseInt(args[argCount++]);
+            return new Canvas(sizex, sizey, ColorAdapter.parseColor(args[argCount++], Integer.parseInt(args[argCount++])));
         } else if (shapeName.equals(ShapeType.SQUARE.text())) {
-            Point start = new Point(Integer.parseInt(args[1]), Integer.parseInt(args[2]));
-            int length = Integer.parseInt(args[3]);
+            Point start = new Point(Integer.parseInt(args[argCount++]), Integer.parseInt(args[argCount++]));
+            int length = Integer.parseInt(args[argCount++]);
             return new Square(start, length,
-                    ColorAdapter.parseColor(args[4], Integer.parseInt(args[5])),
-                    ColorAdapter.parseColor(args[6], Integer.parseInt(args[7])));
+                    ColorAdapter.parseColor(args[argCount++], Integer.parseInt(args[argCount++])),
+                    ColorAdapter.parseColor(args[argCount++], Integer.parseInt(args[argCount++])));
+        } else if (shapeName.equals(ShapeType.RECTANGLE.text())) {
+            Point start = new Point(Integer.parseInt(args[argCount++]), Integer.parseInt(args[argCount++]));
+            int length = Integer.parseInt(args[argCount++]);
+            int height = Integer.parseInt(args[argCount++]);
+            return new Rectangle(start, length, height,
+                    ColorAdapter.parseColor(args[argCount++], Integer.parseInt(args[argCount++])),
+                    ColorAdapter.parseColor(args[argCount++], Integer.parseInt(args[argCount++])));
+        } else if (shapeName.equals(ShapeType.DIAMOND.text())) {
+            Point center = new Point(Integer.parseInt(args[argCount++]), Integer.parseInt(args[argCount++]));
+            int length = Integer.parseInt(args[argCount++]);
+            int height = Integer.parseInt(args[argCount++]);
+            return new Diamond(center, length, height,
+                    ColorAdapter.parseColor(args[argCount++], Integer.parseInt(args[argCount++])),
+                    ColorAdapter.parseColor(args[argCount++], Integer.parseInt(args[argCount++])));
         }
         return null;
     }

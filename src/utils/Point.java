@@ -20,4 +20,9 @@ public final class Point {
     public Point getOffset(final int offX, final int offY) {
         return new Point(x + offX, y + offY);
     }
+
+    @Override
+    public String toString() {
+        return "[" + x + ", " + y + "]";
+    }
 }
