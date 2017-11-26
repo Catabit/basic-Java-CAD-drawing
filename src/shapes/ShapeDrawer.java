@@ -1,9 +1,9 @@
 package shapes;
 
 import utils.LineDrawer;
-import utils.Pixel;
+import utils.PixelColor;
 import utils.Point;
-
+import utils.ShapeFiller;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 
@@ -12,8 +12,19 @@ public final class ShapeDrawer implements Visitor {
     private BufferedImage base;
 
     @Override
+    public void visit(final Canvas s) {
+        // the CANVAS shape will reinitialize the base raster
+        // and fill it with the given background color
+        base = new BufferedImage(s.getSizeX(), s.getSizeY(), BufferedImage.TYPE_INT_ARGB);
+        for (int i = 0; i < s.getSizeX(); i++) {
+            for (int j = 0; j < s.getSizeY(); j++) {
+                base.setRGB(i, j, s.getBackground().getRGB());
+            }
+        }
+    }
+
+    @Override
     public void visit(final Square s) {
-        //System.out.println("Rectangle something");
         Point lt, rt, lb, rb;
         lt = s.getStart();
         rt = new Point(s.getStart().x() + s.getLength(), s.getStart().y());
@@ -45,14 +56,8 @@ public final class ShapeDrawer implements Visitor {
     }
 
     @Override
-    public void visit(final Canvas s) {
-
-        base = new BufferedImage(s.getSizeX(), s.getSizeY(), BufferedImage.TYPE_INT_ARGB);
-        for (int i = 0; i < s.getSizeX(); i++) {
-            for (int j = 0; j < s.getSizeY(); j++) {
-                base.setRGB(i, j, s.getBackground().getRGB());
-            }
-        }
+    public void visit(final Line s) {
+        LineDrawer.drawLine(base, s.getStart(), s.getEnd(), s.getBorderColor());
     }
 
     @Override
@@ -62,6 +67,7 @@ public final class ShapeDrawer implements Visitor {
         b = s.getCenter().getOffset(0, -s.getHeight() / 2);
         l = s.getCenter().getOffset(-s.getLength() / 2, 0);
         r = s.getCenter().getOffset(s.getLength() / 2, 0);
+        //the int/2 does not require any rounding (i.e. 5/2 = 2 )
 
         LineDrawer.drawLine(base, l, t, s.getBorderColor());
         LineDrawer.drawLine(base, t, r, s.getBorderColor());
@@ -70,11 +76,6 @@ public final class ShapeDrawer implements Visitor {
 
         ShapeFiller.floodFill(base, s.getCenter().x(), s.getCenter().y(),
                 s.getBorderColor().getRGB(), s.getInnerColor());
-    }
-
-    @Override
-    public void visit(final Line s) {
-        LineDrawer.drawLine(base, s.getStart(), s.getEnd(), s.getBorderColor());
     }
 
     @Override
@@ -91,7 +92,7 @@ public final class ShapeDrawer implements Visitor {
 
     @Override
     public void visit(final Polygon s) {
-        int x = 0, y = 0;
+        int x = 0, y = 0; // the fill center position
         for (int i = 0; i < s.getNumPoints() - 1; i++) {
             Point p1 = s.getPoints().get(i);
             Point p2 = s.getPoints().get(i + 1);
@@ -100,7 +101,8 @@ public final class ShapeDrawer implements Visitor {
             LineDrawer.drawLine(base, p1, p2, s.getBorderColor());
         }
         LineDrawer.drawLine(base, s.getPoints().get(s.getNumPoints() - 1), s.getPoints().get(0),
-                s.getBorderColor());
+                s.getBorderColor()); // line between the last and first point
+
         x += s.getPoints().get(s.getNumPoints() - 1).x();
         y += s.getPoints().get(s.getNumPoints() - 1).y();
         x /= s.getNumPoints();
@@ -110,7 +112,7 @@ public final class ShapeDrawer implements Visitor {
     }
 
     @Override
-    public void visit(final Circle s) { //todo magic fkin numbers
+    public void visit(final Circle s) {
         int xc = s.getCenter().x();
         int yc = s.getCenter().y();
         int r = s.getRadius();
@@ -140,14 +142,14 @@ public final class ShapeDrawer implements Visitor {
     }
 
     private void drawCircle(final int xc, final int yc, final int x, final int y, final Color c) {
-        Pixel.set(base, xc + x, yc + y, c.getRGB());
-        Pixel.set(base, xc - x, yc + y, c.getRGB());
-        Pixel.set(base, xc + x, yc - y, c.getRGB());
-        Pixel.set(base, xc - x, yc - y, c.getRGB());
-        Pixel.set(base, xc + y, yc + x, c.getRGB());
-        Pixel.set(base, xc - y, yc + x, c.getRGB());
-        Pixel.set(base, xc + y, yc - x, c.getRGB());
-        Pixel.set(base, xc - y, yc - x, c.getRGB());
+        PixelColor.set(base, xc + x, yc + y, c.getRGB());
+        PixelColor.set(base, xc - x, yc + y, c.getRGB());
+        PixelColor.set(base, xc + x, yc - y, c.getRGB());
+        PixelColor.set(base, xc - x, yc - y, c.getRGB());
+        PixelColor.set(base, xc + y, yc + x, c.getRGB());
+        PixelColor.set(base, xc - y, yc + x, c.getRGB());
+        PixelColor.set(base, xc + y, yc - x, c.getRGB());
+        PixelColor.set(base, xc - y, yc - x, c.getRGB());
     }
 
     public BufferedImage getImage() {

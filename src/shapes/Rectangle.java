@@ -11,6 +11,16 @@ public final class Rectangle implements Shape {
     private Color borderColor;
     private Color innerColor;
 
+
+    public Rectangle(final Point inStart, final int inLength, final int inHeight,
+                     final Color inBorder, final Color inInner) {
+        start = inStart;
+        length = inLength;
+        height = inHeight;
+        borderColor = inBorder;
+        innerColor = inInner;
+    }
+
     public Color getBorderColor() {
         return borderColor;
     }
@@ -29,15 +39,6 @@ public final class Rectangle implements Shape {
 
     public Point getStart() {
         return start;
-    }
-
-    public Rectangle(final Point inStart, final int inLength, final int inHeight,
-                     final Color inBorder, final Color inInner) {
-        start = inStart;
-        length = inLength;
-        height = inHeight;
-        borderColor = inBorder;
-        innerColor = inInner;
     }
 
     @Override

@@ -13,14 +13,16 @@ public abstract class Main {
 
         try {
             File in = new File(args[0]);
-            File f = new File("drawing.png");
+            File out = new File("drawing.png");
             Scanner sc = new Scanner(in);
             int numShapes = sc.nextInt();
             sc.nextLine();
+            // store the shapes in an array to remind of the 'layered' image editing tehnique.
             Shape[] shapes = new Shape[numShapes];
             ShapeDrawer v = new ShapeDrawer();
 
             for (int i = 0; i < numShapes; i++) {
+                // read the next line from the input and send it to the factory.
                 shapes[i] = ShapeBuilder.getInstance().buildShape(sc.nextLine());
             }
 
@@ -29,7 +31,7 @@ public abstract class Main {
             }
 
 
-            ImageIO.write(v.getImage(), "PNG", f);
+            ImageIO.write(v.getImage(), "PNG", out);
 
 
         } catch (java.io.IOException ex) {

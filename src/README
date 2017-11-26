@@ -1,5 +1,26 @@
 Tema 2 POO
 
+Implementarea pattern-urilor:
+Factory si singleton au fost folosite simultan in clasa ShapeBuilder, deoarece nu este niciodata
+nevoie de mai multe instante a clasei, ea facand legatura intre protocolul de input al userului, in
+cazul curent inputul line by line din fisier, si constructorii formelor ce primesc parametri expliciti,
+cum ar fi punctele de start/final, lungimea, culoarea, etc.
+
+Pattern-ul visitor a fost folosit in relatia Shape - ShapeDrawer, Shape fiind 'desenabil', iar
+ShapeDrawer fiind capabil 'sa deseneze'. Forma in sine nu 'cunoaste' cum se reprezinta, ci doar este
+un container pentru toate marimile definitorii. Orice clasa care implementeaza Visitor automat este
+obligata sa declare moduri de desenare pentru toate formele existente, bazate pe informatiile acestora.
+
+Clasele din pachetul utils:
+    PixelColor are scopul de a extinde functionalitatea bufferedimage.setRGB prin verificarea coord.
+date ca parametru si umplerea doar acelor pixeli din interiorul imaginii.
+    ColorAdapter parseaza culoarea in format #RRGGBB ALPHA, unde RR, GG, BB sunt in hexa iar ALPHA
+in format zecimal si returneaza o culoare in format ARGB din pachetul java.awt, utilizabila in restul
+programului.
+    Point are scopul de a incorpora o coord x si una y in acelasi container.
+    LineDrawer implementeaza algoritmul Bresenham pentru desenarea unei linii drepte
+    ShapeFiller implementeaza un algoritm de flood fill iterativ (cu o coada): link sursa cod
+https://stackoverflow.com/a/40421933
 
 Bitire Catalin-Constantin
 325CD

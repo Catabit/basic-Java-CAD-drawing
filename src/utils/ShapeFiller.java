@@ -1,9 +1,7 @@
-package shapes;
+package utils;
 
-import utils.Pixel;
-import utils.Point;
-
-
+import shapes.Rectangle;
+import shapes.Square;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.util.LinkedList;
@@ -22,7 +20,7 @@ public final class ShapeFiller {
 
         for (int x = lt.x() + 1; x < rt.x(); x++) {
             for (int y = lt.y() + 1; y < lb.y(); y++) {
-                Pixel.set(base, x, y, r.getInnerColor().getRGB());
+                PixelColor.set(base, x, y, r.getInnerColor().getRGB());
             }
         }
     }
@@ -37,7 +35,7 @@ public final class ShapeFiller {
 
         for (int x = lt.x() + 1; x < rt.x(); x++) {
             for (int y = lt.y() + 1; y < lb.y(); y++) {
-                Pixel.set(base, x, y, s.getInnerColor().getRGB());
+                PixelColor.set(base, x, y, s.getInnerColor().getRGB());
             }
         }
     }
@@ -84,7 +82,7 @@ public final class ShapeFiller {
             return false;
         }
         // valid, set it
-        Pixel.set(image, x, y, replacementColor);
+        PixelColor.set(image, x, y, replacementColor);
         hits[y][x] = true;
         return true;
     }

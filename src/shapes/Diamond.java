@@ -11,6 +11,16 @@ public final class Diamond implements Shape {
     private Color borderColor;
     private Color innerColor;
 
+
+    public Diamond(final Point inCenter, final int inLength, final int inHeight,
+                   final Color inBorder, final Color inInner) {
+        center = inCenter;
+        length = inLength;
+        height = inHeight;
+        borderColor = inBorder;
+        innerColor = inInner;
+    }
+
     public Color getBorderColor() {
         return borderColor;
     }
@@ -29,15 +39,6 @@ public final class Diamond implements Shape {
 
     public Point getCenter() {
         return center;
-    }
-
-    public Diamond(final Point inCenter, final int inLength, final int inHeight,
-                   final Color inBorder, final Color inInner) {
-        center = inCenter;
-        length = inLength;
-        height = inHeight;
-        borderColor = inBorder;
-        innerColor = inInner;
     }
 
     @Override
